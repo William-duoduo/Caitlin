@@ -54,9 +54,14 @@ public class SecurityConfig {
         httpSecurity.csrf(it -> it.disable());
         httpSecurity.authorizeHttpRequests(it ->
                 it.requestMatchers("/login").permitAll()  //设置登录路径所有人都可以访问
-                .anyRequest().authenticated()  //其他路径都要进行拦截
+                        .anyRequest().authenticated()  //其他路径都要进行拦截
         );
-
+//        //表单
+        httpSecurity.formLogin(from ->
+                from.loginPage("/login")   //跳转到自定义的登录页面
+                        .loginProcessingUrl("/login")  //处理前端的请求，与from表单的action一致即可
+                        .defaultSuccessUrl("/index")  //默认的请求成功之后的跳转页面，直接访问登录页面
+        );
         return httpSecurity.build();
     }
 }
